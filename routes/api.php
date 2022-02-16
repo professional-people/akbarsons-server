@@ -18,6 +18,8 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+Route::get('dashboard-counts', ['uses' => 'Dashboard\DashboardController@dashboardCounter']);
+
 Route::post('add-company', ['uses' => 'Company\CompanyController@addCompany']);
 Route::post('all-companies', ['uses' => 'Company\CompanyController@allCompanies']);
 Route::post('status-company', ['uses' => 'Company\CompanyController@companyStatus']);
@@ -28,4 +30,18 @@ Route::post('edit-company', ['uses' => 'Company\CompanyController@editCompany'])
 Route::get('companies-dropdown', ['uses' => 'Medicine\MedicineController@companiesDropdown']);
 Route::get('medicine-type-dropdown', ['uses' => 'Medicine\MedicineController@medicineTypesDropdown']);
 Route::post('add-medicine', ['uses' => 'Medicine\MedicineController@addMedicine']);
-Route::get('all-medicines', ['uses' => 'Medicine\MedicineController@allMedicines']);
+Route::post('all-medicines', ['uses' => 'Medicine\MedicineController@allMedicines']);
+Route::post('medicine-status', ['uses' => 'Medicine\MedicineController@medicineStatus']);
+Route::post('delete-medicine', ['uses' => 'Medicine\MedicineController@deleteMedicine']);
+Route::post('medicine-details', ['uses' => 'Medicine\MedicineController@medicineDetails']);
+Route::post('medicine-update', ['uses' => 'Medicine\MedicineController@medicineUpdate']);
+
+Route::get('alert-duration', ['uses' => 'Stock\StockController@alertDurations']);
+Route::get('stock-types', ['uses' => 'Stock\StockController@stockTypes']);
+
+Route::post('medicine-types', ['uses' => 'Medicine\MedicineTypes@medicineTypes']);
+Route::post('medicine-types-status', ['uses' => 'Medicine\MedicineTypes@medicineTypesStatus']);
+Route::post('add-medicine-type', ['uses' => 'Medicine\MedicineTypes@addMedicineType']);
+Route::post('medicine-type-details', ['uses' => 'Medicine\MedicineTypes@medicineTypeDetails']);
+Route::post('update-medicine-type', ['uses' => 'Medicine\MedicineTypes@updateMedicineType']);
+Route::post('delete-medicine-type', ['uses' => 'Medicine\MedicineTypes@deleteMedicineType']);

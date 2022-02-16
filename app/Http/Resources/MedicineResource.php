@@ -11,7 +11,9 @@ class MedicineResource extends JsonResource
     {
         return [
             'id'                    =>  $this->id,
+            'medicine_type_id'      =>  $this->type_id ?? "-",
             'medicine_type'         =>  $this->getMedicineType->type ?? "-",
+            'medicine_company_id'   =>  $this->company_id ?? "-",
             'medicine_company'      =>  $this->getMedicineCompany->title ?? "-",
             'medicine_name'         =>  $this->medicine_name,
             'chemical_name'         =>  $this->chemical_name,
