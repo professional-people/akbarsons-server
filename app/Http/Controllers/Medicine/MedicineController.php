@@ -7,10 +7,12 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\CompanyDropdownResource;
 use App\Http\Resources\MedicineResource;
 use App\Http\Resources\MedicineTypesResource;
+use App\Http\Resources\VendorResourse;
 use App\Medicine;
 use App\MedicineType;
 use App\Stock;
 use App\StockType;
+use App\Vendor;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
@@ -41,18 +43,12 @@ class MedicineController extends Controller
         $medicine = new Medicine();
         $medicine->type_id = $request->type_id;
         $medicine->company_id = $request->company_id;
+        $medicine->vendor_id = $request->vendor_id;
         $medicine->medicine_name = $request->medicine_name;
         $medicine->chemical_name = $request->chemical_name;
         $medicine->medicine_description = $request->medicine_description;
         $medicine->status = 1;
         if ($medicine->save()) {
-            if ($request->filled("is_stock") && $request->is_stock == "1") {
-                if($this->saveStock($medicine->id, $request)) {
-                    return response()->json(['status' => true, 'msg' => 'Medicine and stock added successfully.']);
-                } else {
-                    return response()->json(['status' => false, 'msg' => 'Error! Stock data is in correct.']);
-                }
-            }
             return response()->json(['status' => true, 'msg' => 'Medicine added successfully.']);
         } else {
             return response()->json(['status' => false, 'msg' => 'Error! Please try again.']);
@@ -63,12 +59,16 @@ class MedicineController extends Controller
     {
         $query = Medicine::query();
 
+        if ($request->filled("medicine_type")) {
+            $query->where('type_id', $request->medicine_type);
+        }
+
         if ($request->filled("company_name")) {
             $query->where('company_id', $request->company_name);
         }
 
-        if ($request->filled("medicine_type")) {
-            $query->where('type_id', $request->medicine_type);
+        if ($request->filled("vendor_id")) {
+            $query->where('vendor_id', $request->vendor_id);
         }
 
         if ($request->filled("medicine_name")) {
@@ -135,6 +135,7 @@ class MedicineController extends Controller
         if ($medicine) {
             $medicine->type_id = $request->type_id;
             $medicine->company_id = $request->company_id;
+            $medicine->vendor_id = $request->vendor_id;
             $medicine->medicine_name = $request->medicine_name;
             $medicine->chemical_name = $request->chemical_name;
             $medicine->medicine_description = $request->medicine_description;
@@ -148,29 +149,13 @@ class MedicineController extends Controller
         }
     }
 
-    public function saveStock($medicineId, $request)
+    public function vendorsListDropdown()
     {
-        $stockType = StockType::where('slug', $request->stock_type)->first();
-
-        $stock = new Stock();
-        $stock->medicine_id = $medicineId;
-        $stock->batch_no = $request->batch_no;
-        $stock->expiry_date = Carbon::parse($request->expiry_date)->format("Y-m-d");
-        $stock->is_expiry_alert = $request->is_expiry_alert;
-        $stock->alert_duration_id = $request->alert_duration_id;
-        $stock->stock_type = $stockType->id;
-        $stock->quantity = $request->quantity;
-        $stock->quantity_in_stock_type = $request->quantity_in_stock_type;
-        $stock->total_quantity = $request->total_quantity;
-        $stock->purchase_price = $request->purchase_price;
-        $stock->unit_purchase_price = $request->unit_purchase_price;
-        $stock->sale_price = $request->sale_price;
-        $stock->unit_sale_price = $request->unit_sale_price;
-        $stock->status = 1;
-        if ($stock->save()) {
-            return true;
+        $vendors = Vendor::where('status', 1)->orderBy('vendor_name', 'ASC')->get();
+        if ($vendors->isNotEmpty()) {
+            return VendorResourse::collection($vendors);
         } else {
-            return false;
+            return response()->json(['data' => []]);
         }
     }
 }

@@ -36,6 +36,7 @@ Route::post('vendor-update', ['uses' => 'Vendor\VendorController@updateVendor'])
 
 Route::get('companies-dropdown', ['uses' => 'Medicine\MedicineController@companiesDropdown']);
 Route::get('medicine-type-dropdown', ['uses' => 'Medicine\MedicineController@medicineTypesDropdown']);
+Route::get('vendors-list-dropdown', ['uses' => 'Medicine\MedicineController@vendorsListDropdown']);
 Route::post('add-medicine', ['uses' => 'Medicine\MedicineController@addMedicine']);
 Route::post('all-medicines', ['uses' => 'Medicine\MedicineController@allMedicines']);
 Route::post('medicine-status', ['uses' => 'Medicine\MedicineController@medicineStatus']);
@@ -46,6 +47,13 @@ Route::post('medicine-update', ['uses' => 'Medicine\MedicineController@medicineU
 Route::get('alert-duration', ['uses' => 'Stock\StockController@alertDurations']);
 Route::get('stock-types', ['uses' => 'Stock\StockController@stockTypes']);
 Route::get('medicine-list', ['uses' => 'Stock\StockController@medicineList']);
+Route::post('add-stock', ['uses' => 'Stock\StockController@saveStock']);
+Route::post('all-stocks', ['uses' => 'Stock\StockController@allStocks']);
+Route::post('stock-status', ['uses' => 'Stock\StockController@stockStatus']);
+Route::post('delete-stock', ['uses' => 'Stock\StockController@deleteStock']);
+Route::post('item-detail', ['uses' => 'Stock\StockController@itemDetail']);
+Route::post('add-items', ['uses' => 'Stock\StockController@addItems']);
+Route::post('stock-details', ['uses' => 'Stock\StockController@stockDetails']);
 
 Route::post('medicine-types', ['uses' => 'Medicine\MedicineTypes@medicineTypes']);
 Route::post('medicine-types-status', ['uses' => 'Medicine\MedicineTypes@medicineTypesStatus']);

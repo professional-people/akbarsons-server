@@ -15,4 +15,9 @@ class Medicine extends Model
     {
         return $this->hasOne(Company::class, 'id', 'company_id');
     }
+
+    public function getVendor()
+    {
+        return $this->hasOne(Vendor::class, 'id', 'vendor_id');
+    }
 }
