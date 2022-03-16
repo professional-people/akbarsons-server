@@ -180,4 +180,56 @@ class StockController extends Controller
             return response()->json(['data' => []]);
         }
     }
+
+    public function updateQty(Request $request)
+    {
+        $stockDetails = StockDetail::find($request->id);
+        if ($stockDetails) {
+            $stockDetails->quantity = $request->qty;
+            $stockDetails->total_quantity = ($stockDetails->quantity_in_stock_type) ? ($stockDetails->quantity_in_stock_type * $request->qty) : $request->qty;
+            if ($stockDetails->save()) {
+                return response()->json(['status' => true, 'msg' => 'Quantity updated successfully.']);
+            } else {
+                return response()->json(['status' => false, 'msg' => 'Error! Please try again.']);
+            }
+        } else {
+            return response()->json(['status' => false, 'msg' => 'Error! Please try again.']);
+        }
+    }
+
+    public function stockInfo(Request $request)
+    {
+        $stockInfo = Stock::find($request->id);
+        if ($stockInfo) {
+            return new StockResource($stockInfo);
+        } else {
+            return response()->json(['data' => []]);
+        }
+    }
+
+    public function updateStock(Request $request)
+    {
+        $stock = Stock::find($request->id);
+        if ($stock) {
+            $stockType = StockType::where('slug', $request->stock_type)->first();
+            $stock->medicine_id             = $request->medicine_id;
+            $stock->batch_no                = $request->batch_no;
+            $stock->expiry_date             = Carbon::parse($request->expiry_date)->format("Y-m-d");
+            $stock->is_expiry_alert         = $request->is_expiry_alert;
+            $stock->alert_duration_id       = $request->alert_duration_id;
+            $stock->stock_type              = $stockType->id ?? null;
+            $stock->quantity_in_stock_type  = $request->quantity_in_stock_type;
+            $stock->purchase_price          = $request->purchase_price;
+            $stock->unit_purchase_price     = $request->unit_purchase_price;
+            $stock->sale_price              = $request->sale_price;
+            $stock->unit_sale_price         = $request->unit_sale_price;
+            if ($stock->save()) {
+                return response()->json(['status' => true, 'msg' => 'Stock updated successfully.']);
+            } else {
+                return response()->json(['status' => false, 'msg' => 'Error! Please try again.']);
+            }
+        } else {
+            return response()->json(['status' => false, 'msg' => 'Error! Stock not found.']);
+        }
+    }
 }

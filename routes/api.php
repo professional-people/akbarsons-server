@@ -54,6 +54,9 @@ Route::post('delete-stock', ['uses' => 'Stock\StockController@deleteStock']);
 Route::post('item-detail', ['uses' => 'Stock\StockController@itemDetail']);
 Route::post('add-items', ['uses' => 'Stock\StockController@addItems']);
 Route::post('stock-details', ['uses' => 'Stock\StockController@stockDetails']);
+Route::post('update-qty', ['uses' => 'Stock\StockController@updateQty']);
+Route::post('stock-info', ['uses' => 'Stock\StockController@stockInfo']);
+Route::post('update-stock', ['uses' => 'Stock\StockController@updateStock']);
 
 Route::post('medicine-types', ['uses' => 'Medicine\MedicineTypes@medicineTypes']);
 Route::post('medicine-types-status', ['uses' => 'Medicine\MedicineTypes@medicineTypesStatus']);
