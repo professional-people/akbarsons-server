@@ -52,35 +52,23 @@ class StockController extends Controller
     {
         $stockType = StockType::where('slug', $request->stock_type)->first();
         $stockData = [
-            'medicine_id'           => $request->medicine_id,
-            'batch_no'              => $request->batch_no,
-            'expiry_date'           => $request->expiry_date,
-            'is_expiry_alert'       => $request->is_expiry_alert,
-            'alert_duration_id'     => $request->alert_duration_id,
-            'stock_type'            => $stockType->id ?? null,
-            'purchase_price'        => $request->purchase_price,
-            'unit_purchase_price'   => $request->unit_purchase_price,
-            'sale_price'            => $request->sale_price,
-            'unit_sale_price'       => $request->unit_sale_price,
-            'status'                => 1
+            'medicine_id'               => $request->medicine_id,
+            'batch_no'                  => $request->batch_no,
+            'expiry_date'               => $request->expiry_date,
+            'is_expiry_alert'           => $request->is_expiry_alert,
+            'alert_duration_id'         => $request->alert_duration_id,
+            'stock_type'                => $stockType->id ?? null,
+            'quantity_in_stock_type'    => $request->quantity_in_stock_type,
+            'purchase_price'            => $request->purchase_price,
+            'unit_purchase_price'       => $request->unit_purchase_price,
+            'sale_price'                => $request->sale_price,
+            'unit_sale_price'           => $request->unit_sale_price,
+            'status'                    => 1
         ];
         $stock = new Stock();
         $saveStock = $stock->create($stockData);
         if ($saveStock) {
-            $stockDetailsData = [
-                'stock_id'                  => $saveStock->id,
-                'quantity'                  => $request->quantity,
-                'quantity_in_stock_type'    => $request->quantity_in_stock_type,
-                'total_quantity'            => $request->total_quantity,
-                'status'                    => 1
-            ];
-            $stockDetails = new StockDetail();
-            $saveStockDetails = $stockDetails->create($stockDetailsData);
-            if ($saveStockDetails) {
-                return response()->json(['status' => true, 'msg' => 'Stock added successfully.']);
-            } else {
-                return response()->json(['status' => false, 'msg' => 'Error! Please try again.']);
-            }
+            return response()->json(['status' => true, 'msg' => 'Stock added successfully.']);
         } else {
             return response()->json(['status' => false, 'msg' => 'Error! Please try again.']);
         }
@@ -146,7 +134,7 @@ class StockController extends Controller
             return response()->json(['data' => [
                 'id'            => $itemDetails->id,
                 'stock_type'    => $itemDetails->getStockType->slug ?? "",
-                'qty_in_stock'  => $itemDetails->getStockDetails->quantity_in_stock_type ?? ""
+                'qty_in_stock'  => $itemDetails->quantity_in_stock_type ?? ""
             ]]);
         } else {
             return response()->json(['data' => []]);
