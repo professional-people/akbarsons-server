@@ -30,6 +30,6 @@ class Stock extends Model
 
     public function getStockDetails()
     {
-        return $this->hasOne(StockDetail::class, 'stock_id', 'id')->where('status', '1');
+        return $this->hasMany(StockDetail::class, 'stock_id', 'id')->where('status', '1');
     }
 }

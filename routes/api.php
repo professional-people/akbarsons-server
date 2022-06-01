@@ -19,6 +19,8 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::get('dashboard-counts', ['uses' => 'Dashboard\DashboardController@dashboardCounter']);
+Route::get('near-expiry-list', ['uses' => 'Dashboard\DashboardController@nearExpiryMedicineList']);
+Route::get('expired-list', ['uses' => 'Dashboard\DashboardController@expiredMedicineList']);
 
 Route::post('add-company', ['uses' => 'Company\CompanyController@addCompany']);
 Route::post('all-companies', ['uses' => 'Company\CompanyController@allCompanies']);
@@ -64,3 +66,6 @@ Route::post('add-medicine-type', ['uses' => 'Medicine\MedicineTypes@addMedicineT
 Route::post('medicine-type-details', ['uses' => 'Medicine\MedicineTypes@medicineTypeDetails']);
 Route::post('update-medicine-type', ['uses' => 'Medicine\MedicineTypes@updateMedicineType']);
 Route::post('delete-medicine-type', ['uses' => 'Medicine\MedicineTypes@deleteMedicineType']);
+
+Route::post('pos-medicines', ['uses' => 'Pos\PosController@posMedicines']);
+Route::post('pos-save-sale', ['uses' => 'Pos\PosController@posSaveSale']);
